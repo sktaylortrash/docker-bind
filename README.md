@@ -1,26 +1,33 @@
-# windoac/bind
+forked from [windoac/bind](https://github.com/WindoC/docker-bind)
 
-forked from [sameersbn/docker-bind](https://github.com/sameersbn/docker-bind)
+## Updated features for this fork
 
-Most of the setting should be same.
-
-## new add feature for this forked
-
-1. Supported cron. Will save the current crontab content/job when the container stops and load it when starts.
-2. Option to run the bind(named) with option `-f` instead of `-g`
-
-### 2. Option to run the bind(named) with option `-f` instead of `-g`
-
-* `BIND_LOG_STDERR`: If BIND send the log to STDERR or not. Defaults to `true`. 
-   If you do when to output log to file, set this to false.
+1. Cron support: Will retain the current crontab content/jobs when the container stops and load it when starts.
+2. Root password can be set using environment variable:  ROOT_PASSWORD : Password
 
 ## info
-
-dockerhub forked from sameersbn/bind
-https://hub.docker.com/r/sameersbn/bind
+dockerhub forked from WindoC/docker-bind
+https://github.com/WindoC/docker-bind
 
 Dockerfile see
-https://github.com/WindoC/docker-bind/blob/master/Dockerfile
+https://github.com/sktaylortrash/docker-bind/blob/master/Dockerfile
 
-docker-cmpose.yml example see
-https://github.com/WindoC/docker-bind/blob/master/docker-compose.yml
+docker-compose.yml
+```yaml
+version: "3.2"
+services:
+  
+  bind:
+    image: polargeek/bind-webmin:latest
+    container_name: bind
+    volumes:
+      - ./data:/data
+    ports:
+      - 10000:10000
+      - 53:53
+      - 53:53/udp
+    environment:
+      TZ : America/Regina
+      ROOT_PASSWORD : Password
+    restart: unless-stopped
+```
