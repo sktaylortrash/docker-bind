@@ -1,15 +1,15 @@
-FROM ubuntu:20.04 AS add-apt-repositories
+FROM ubuntu:latest AS add-apt-repositories
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y curl gnupg \
  && curl -sSL http://www.webmin.com/jcameron-key.asc | apt-key add \
  && echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
 
-FROM ubuntu:20.04
+FROM ubuntu:latest
 
 ENV BIND_USER=bind \
-    BIND_VERSION=9.16.1 \
-    WEBMIN_VERSION=2.010 \
+    BIND_VERSION=9.18.1 \
+    WEBMIN_VERSION=2.013 \
     DATA_DIR=/data
 
 COPY --from=add-apt-repositories /etc/apt/trusted.gpg /etc/apt/trusted.gpg
@@ -18,9 +18,10 @@ COPY entrypoint.sh /entrypoint.sh
 
 RUN rm -rf /etc/apt/apt.conf.d/docker-gzip-indexes \
  && apt-get update \
+ && apt-get upgrade -y \ 
  && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-      bind9=1:${BIND_VERSION}* bind9-host=1:${BIND_VERSION}* dnsutils \
-      webmin=${WEBMIN_VERSION}* \
+      bind9 bind9-host dnsutils \
+      webmin \
       cron \
  && rm -rf /var/lib/apt/lists/* \
  && chmod 755 /entrypoint.sh
