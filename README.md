@@ -20,6 +20,7 @@ services:
   bind:
     image: polargeek/bind-webmin:latest
     container_name: bind
+    hostname: bind 
     volumes:
       - ./data:/data
     ports:

@@ -2,8 +2,9 @@ version: "3.2"
 services:
   
   bind:
-    image: polargeek/bind-webmin:latest
+    image: nginx:1.0
     container_name: bind
+    hostname: bind.local # Webmin server clustering seems to work better with the actual hostname you will be setting in DNS
     volumes:
       - ./data:/data
     ports:
@@ -12,6 +13,6 @@ services:
       - 53:53/udp
     environment:
       TZ : America/Regina
-      ROOT_PASSWORD : Password
+      ROOT_PASSWORD : Password        # Set the Root Password
     restart: unless-stopped
 
