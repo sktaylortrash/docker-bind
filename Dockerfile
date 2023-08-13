@@ -2,14 +2,14 @@ FROM ubuntu:latest AS add-apt-repositories
 
 RUN apt-get update \
  && DEBIAN_FRONTEND=noninteractive apt-get install -y curl gnupg \
- && curl -sSL http://www.webmin.com/jcameron-key.asc | apt-key add \
- && echo "deb http://download.webmin.com/download/repository sarge contrib" >> /etc/apt/sources.list
+ && curl -sSL https://download.webmin.com/developers-key.asc | apt-key add \
+ && echo "deb http://download.webmin.com/download/newkey/repository stable contrib" >> /etc/apt/sources.list
 
 FROM ubuntu:latest
 
 ENV BIND_USER=bind \
     BIND_VERSION=9.18.1 \
-    WEBMIN_VERSION=2.013 \
+    WEBMIN_VERSION=2.101 \
     DATA_DIR=/data
 
 COPY --from=add-apt-repositories /etc/apt/trusted.gpg /etc/apt/trusted.gpg
